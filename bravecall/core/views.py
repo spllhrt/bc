@@ -44,29 +44,24 @@ def signup(request):
         password = request.POST['password']
         repassword = request.POST['repassword']
 
-        # Check if passwords match
         if password != repassword:
             messages.error(request, "Passwords do not match!")
             return redirect('signup')
 
-        # Check if email already exists
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email is already registered!")
             return redirect('signup')
 
-        # Hash password before saving
         hashed_password = make_password(password)
         user = User(email=email, fname=fname, lname=lname, password=hashed_password)
-        user.status = "inactive"  # Account is initially inactive
+        user.status = "inactive" 
 
         user.save()
 
-        # Create activation token and link
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = account_activation_token.make_token(user)
         activation_link = request.build_absolute_uri(reverse('activate', kwargs={'uidb64': uid, 'token': token}))
 
-        # Send activation email
         try:
             subject = "Activate Your Account"
             message = render_to_string('activation_email.html', {
@@ -91,13 +86,11 @@ def login_user(request):
         try:
             user = User.objects.get(email=email)
 
-            # Check if the user's account is active
             if user.status != "active":
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = account_activation_token.make_token(user)
                 activation_link = request.build_absolute_uri(reverse('activate', kwargs={'uidb64': uid, 'token': token}))
 
-                # Send activation email again
                 try:
                     subject = "Activate Your Account (Resent)"
                     message = render_to_string('activation_email.html', {
@@ -110,7 +103,6 @@ def login_user(request):
                     messages.error(request, f"Error sending activation email: {str(e)}")
                 return redirect('login')
 
-            # Check password validity
             if check_password(password, user.password):
                 request.session['user_id'] = user.id
                 request.session['user_fname'] = user.fname
@@ -120,7 +112,6 @@ def login_user(request):
 
                 messages.success(request, "Login successful!")
 
-                # AJAX response if needed
                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                     return JsonResponse({'message': 'Login successful!', 'token': token.key})
 
@@ -278,3 +269,21 @@ def reports(request):
 
 
     return render(request, 'admin/reports.html', {'users': users, 'user': user})
+
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
+def faq(request):
+    return render(request, 'faq.html')
+
+def features(request):
+    return render(request, 'features.html')
+
+def index(request):
+    return render(request, 'index.html')
+
+def services(request):
+    return render(request, 'services.html')
