@@ -43,31 +43,34 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                {% if messages %}
+                                    {% if messages %}
                                     <div class="alert-container">
                                         {% for message in messages %}
-                                            <div class="alert 
-                                                {% if message.tags == 'success' %}alert-success
-                                                {% elif message.tags == 'error' %}alert-danger
-                                                {% elif message.tags == 'warning' %}alert-warning
-                                                {% elif message.tags == 'info' %}alert-info
-                                                {% endif %}
-                                                alert-dismissible fade show" role="alert">
-                                                <i class="fas 
-                                                    {% if message.tags == 'success' %}fa-check-circle
-                                                    {% elif message.tags == 'error' %}fa-times-circle
-                                                    {% elif message.tags == 'warning' %}fa-exclamation-triangle
-                                                    {% elif message.tags == 'info' %}fa-info-circle
+                                            {% if 'registration' in message|lower or 'login' in message|lower or 'logout' in message|lower %}
+                                                <div class="alert 
+                                                    {% if message.tags == 'success' %}alert-success
+                                                    {% elif message.tags == 'error' %}alert-danger
+                                                    {% elif message.tags == 'warning' %}alert-warning
+                                                    {% elif message.tags == 'info' %}alert-info
                                                     {% endif %}
-                                                    "></i>
-                                                {{ message }}
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
+                                                    alert-dismissible fade show" role="alert">
+                                                    <i class="fas 
+                                                        {% if message.tags == 'success' %}fa-check-circle
+                                                        {% elif message.tags == 'error' %}fa-times-circle
+                                                        {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                                                        {% elif message.tags == 'info' %}fa-info-circle
+                                                        {% endif %}
+                                                        "></i>
+                                                    {{ message }}
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 {% endif %}
+                                
                                 
                                     <form class="user"  method="post" >
                                         {% csrf_token %}

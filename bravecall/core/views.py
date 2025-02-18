@@ -1,7 +1,7 @@
 import os
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.hashers import make_password, check_password
 from django.http import JsonResponse, HttpResponse
 from rest_framework.authtoken.models import Token
@@ -14,6 +14,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.core.files.storage import FileSystemStorage
 
 User = get_user_model()
 
@@ -287,3 +288,52 @@ def index(request):
 
 def services(request):
     return render(request, 'services.html')
+
+
+def profile(request):
+    user = User.objects.get(id=request.session['user_id'])
+
+    if request.method == 'POST':
+        # Update profile picture
+        if 'profile_pic' in request.FILES:
+            profile_pic = request.FILES['profile_pic']
+            fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+            filename = fs.save(profile_pic.name, profile_pic)
+            user.profile_picture = os.path.join(settings.MEDIA_URL, filename)  # Correct path for retrieval
+            user.save()
+            messages.success(request, "Profile picture updated!")
+
+
+
+        # Update password
+        if 'password' in request.POST and request.POST['password']:
+            password = request.POST['password']
+            if password:
+                user.set_password(password)
+                user.save()
+                update_session_auth_hash(request, user)  # Keep the user logged in after password change
+                messages.success(request, "Password updated!")
+
+        # Update other fields (e.g., first name, last name, email)
+        user.fname = request.POST.get('fname', user.fname)
+        user.lname = request.POST.get('lname', user.lname)
+        user.email = request.POST.get('email', user.email)
+        user.save()
+
+        messages.success(request, "Profile updated!")
+        return redirect('profile')
+
+    return render(request, 'admin/profile.html', {'user': user})
+
+def charts(request):
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to access the charts page.")
+        return redirect('login')
+
+    try:
+        user = User.objects.get(id=request.session['user_id'])
+    except User.DoesNotExist:
+        messages.error(request, "User not found")
+        return redirect('login')
+
+    return render(request, 'admin/charts.html', {'user': user})

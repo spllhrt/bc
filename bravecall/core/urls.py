@@ -15,6 +15,7 @@ urlpatterns = [
     # path('blank/', views.blank, name='blank'),  
     path('google-auth/', views.google_auth, name='google-auth'),  
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('charts/', views.charts, name='charts'),
     
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
@@ -22,6 +23,8 @@ urlpatterns = [
     path('features/', views.features, name='features'),
     path('', views.index, name='index'),
     path('services/', views.services, name='services'),
+    
+    path('profile/', views.profile, name='profile'),
 ]
 
 if settings.DEBUG:
