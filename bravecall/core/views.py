@@ -325,6 +325,41 @@ def profile(request):
 
     return render(request, 'admin/profile.html', {'user': user})
 
+def userprofile(request):
+    user = User.objects.get(id=request.session['user_id'])
+
+    if request.method == 'POST':
+        # Update profile picture
+        if 'profile_pic' in request.FILES:
+            profile_pic = request.FILES['profile_pic']
+            fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+            filename = fs.save(profile_pic.name, profile_pic)
+            user.profile_picture = os.path.join(settings.MEDIA_URL, filename)  # Correct path for retrieval
+            user.save()
+            messages.success(request, "Profile picture updated!")
+
+
+
+        # Update password
+        if 'password' in request.POST and request.POST['password']:
+            password = request.POST['password']
+            if password:
+                user.set_password(password)
+                user.save()
+                update_session_auth_hash(request, user)  # Keep the user logged in after password change
+                messages.success(request, "Password updated!")
+
+        # Update other fields (e.g., first name, last name, email)
+        user.fname = request.POST.get('fname', user.fname)
+        user.lname = request.POST.get('lname', user.lname)
+        user.email = request.POST.get('email', user.email)
+        user.save()
+
+        messages.success(request, "Profile updated!")
+        return redirect('userprofile')
+
+    return render(request, 'user/profile.html', {'user': user})
+
 def charts(request):
     if 'user_id' not in request.session:
         messages.error(request, "You must be logged in to access the charts page.")
@@ -337,3 +372,4 @@ def charts(request):
         return redirect('login')
 
     return render(request, 'admin/charts.html', {'user': user})
+
