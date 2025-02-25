@@ -16,87 +16,138 @@
 
     <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, #dff6ff, #b3e5fc);
+        }
+        .register-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            max-width: 1200px;
+            display: flex;
+            flex-direction: row;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .register-form {
+            flex: 1;
+            padding: 40px;
+            background-color: #ffffff;
+        }
+
+        .register-form h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #4e73df;
+        }
+
+        .register-image {
+            flex: 1;
+            background-color: #f8f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .register-image img {
+            max-width: 80%;
+            border-radius: 10px;
+        }
+
+        .text-small {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .text-small a {
+            color: #4e73df;
+            text-decoration: none;
+        }
+
+        .text-small a:hover {
+            text-decoration: underline;
+        }
+
+        
+    </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body>
 
-    <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image">
-                            <div class="p-5">
-                            <img src="../static/assets/img/illustration-1.webp" alt="Hero Image" class="img-fluid">  
-                            <hr>
-                                <div class="text-center">
-                                    <a>BraveCall</a>
-                                </div>
-                                <div class="text-center">
-                                    <a>You are safe with us.</a>
-                                </div> 
-                            </div>  
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                            </div>
-                            {% if messages %}
-                                <ul>
-                                {% for message in messages %}
-                                    <li>{{ message }}</li>
-                                {% endfor %}
-                                </ul>
-                            {% endif %}
-
-                            <form class="user" method = "post">
-                                {% csrf_token %}
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" name="fname"
-                                            placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" name="lname"
-                                            placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" name="email"
-                                        placeholder="Email Address">
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                        name="password" placeholder="Password">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                        name="repassword" placeholder="Repeat Password">
-                                    </div>
-                                </div>
-                                <button type="submit "class="btn btn-primary btn-user btn-block">
-                                    Register Account
-                                </button>
-                                <hr>
-                            </form>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="{% url 'login' %}">Already have an account? Login!</a>
-                            </div>
+    <div class="container register-container">
+        <div class="card">
+            <div class="register-form">
+                <div class="text-center">
+                    <h1>Create an Account!</h1>
+                </div>
+                <form class="user" method="post">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="text" class="form-control form-control-user" name="fname"
+                                placeholder="First Name">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control form-control-user" name="lname"
+                                placeholder="Last Name">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-user" name="email"
+                            placeholder="Email Address">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6 mb-3 mb-sm-0">
+                            <input type="password" class="form-control form-control-user"
+                            name="password" placeholder="Password">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control form-control-user"
+                            name="repassword" placeholder="Repeat Password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                        Register Account
+                    </button>
+                </form>
+
+                <div class="text-small">
+                    <a href="forgot-password.html">Forgot Password?</a>
+                </div>
+                <div class="text-small">
+                    <a href="{% url 'login' %}">Already have an account? Login!</a>
                 </div>
             </div>
-        </div>
 
+            <div class="register-image">
+                <img src="../static/assets/img/illustration-1.webp" alt="Hero Image">
+                <hr>
+                <h2 class="text-gray-900 text-center mt-3">BraveCall</h2>
+                <p class="text-center">You are safe with us.</p>
+            </div>
+        </div>
     </div>
+
     <script src="../static/vendor/jquery/jquery.min.js"></script>
     <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="../static/js/sb-admin-2.min.js"></script>
 </body>
+
 </html>

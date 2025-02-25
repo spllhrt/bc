@@ -29,9 +29,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     fname = models.CharField(max_length=100)
     lname = models.CharField(max_length=100)
     password = models.CharField(max_length=255)
-    role = models.CharField(max_length=255, default='admin')
+    role = models.CharField(max_length=255, default='user')
     status = models.CharField(max_length=255, default='active')
-    profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/profile-user.png')
+    profile_picture = models.ImageField(upload_to='profile_pics/', default='../static/assets/img/icon.png')
     
     # Avoid using last_login field
     last_login = None  # Ensure it's not included

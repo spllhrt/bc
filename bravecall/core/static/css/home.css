@@ -1,0 +1,373 @@
+/* Global Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    min-width: 150px;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+    background: #f0f0f0;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+.main-content {
+    flex: 2;
+}
+
+.sidebar {
+    flex: 1;
+}
+
+/* Welcome Card */
+.welcome-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #0056b3, #003366);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.welcome-card h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color:white;
+}
+
+.welcome-card p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.cta {
+    background: white;
+    color: #0056b3;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.cta:hover {
+    background: #f0f0f0;
+}
+
+.welcome-image img {
+    width: 160px;
+    border-radius: 10px;
+}
+
+/* Feature Section */
+.feature-section {
+    text-align: center;
+}
+
+.feature-section h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.feature-card {
+    background: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 30px;
+    margin-right: 12px;
+}
+
+.feature-text h4 {
+    margin-bottom: 5px;
+    font-size: 18px;
+    color: #004899;
+}
+
+.feature-text p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Calendar Card */
+.calendar-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.calendar-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #0056b3;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+    padding: 8px;
+    text-align: center;
+}
+
+.today {
+    background: #0056b3;
+    color: white;
+    border-radius: 50%;
+}
+
+/* Widgets */
+.widgets-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 20px;
+    margin-top: 20px;
+}
+
+.widget {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.wide-widget {
+    grid-column: span 2;
+}
+
+.tall-widget {
+    grid-row: span 2;
+}
+
+/* Emergency Contacts */
+.emergency-card {
+    border-left: 5px solid #d9534f;
+    margin-top: 20px;
+}
+
+.widget h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #0056b3;
+    font-weight: bold;
+}
+
+.widget ul {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+}
+
+.widget ul li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.widget ul li strong {
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+/* Tip Carousel */
+.tip-carousel {
+    text-align: center;
+}
+
+.tip-carousel button {
+    background: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.tip-carousel button:hover {
+    background: #003366;
+}
+
+/* Checklist */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+ul li input {
+    margin-right: 10px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-buttons {
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#confirmLogout {
+    background: #d9534f;
+    color: white;
+}
+
+#cancelLogout {
+    background: #5bc0de;
+    color: white;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 300px;
+}
+
+.modal-actions {
+    margin-top: 15px;
+}
+
+.modal-actions .btn {
+    padding: 8px 15px;
+    margin: 5px;
+    cursor: pointer;
+}

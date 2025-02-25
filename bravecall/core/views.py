@@ -16,6 +16,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.files.storage import FileSystemStorage
 
+
 User = get_user_model()
 
 from .tokens import account_activation_token
@@ -108,6 +109,7 @@ def login_user(request):
                 request.session['user_id'] = user.id
                 request.session['user_fname'] = user.fname
                 request.session['user_lname'] = user.lname
+                request.session['user_role'] = user.role
 
                 token, created = Token.objects.get_or_create(user=user)
 
@@ -116,7 +118,10 @@ def login_user(request):
                 if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                     return JsonResponse({'message': 'Login successful!', 'token': token.key})
 
-                return redirect('dashboard')
+                if user.role == 'admin':
+                    return redirect('dashboard')
+                else:
+                    return redirect('home')
             else:
                 messages.error(request, "Invalid password")
         except User.DoesNotExist:
@@ -149,12 +154,16 @@ def google_auth(request):
     request.session['user_id'] = user.id
     request.session['user_fname'] = user.fname
     request.session['user_lname'] = user.lname
+    request.session['user_role'] = user.role
 
     token, created = Token.objects.get_or_create(user=user)
 
     messages.success(request, "Login successful with Google!")
 
-    return redirect('dashboard') 
+    if user.role == 'admin':
+        return redirect('dashboard')
+    else:
+        return redirect('home')
 
 def logout_user(request):
     request.session.flush()
@@ -190,15 +199,15 @@ def dashboard(request):
 
 def users(request):
     if 'user_id' not in request.session:
-        messages.error(request, "You must be logged in to access the dashboard.")
+        messages.error(request, "You must be logged in to access this page.")
         return redirect('login')
 
     try:
         user = User.objects.get(id=request.session['user_id'])
         
         if user.role != 'admin':
-            messages.error(request, "You do not have permission to access the dashboard.")
-            return redirect('login')
+            messages.error(request, "You do not have permission to access this page.")
+            return redirect('home')
     except User.DoesNotExist:
         messages.error(request, "User not found")
         return redirect('login')
@@ -253,15 +262,15 @@ def users(request):
 
 def reports(request):
     if 'user_id' not in request.session:
-        messages.error(request, "You must be logged in to access the dashboard.")
+        messages.error(request, "You must be logged in to access this page.")
         return redirect('login')
 
     try:
         user = User.objects.get(id=request.session['user_id'])
         
         if user.role != 'admin':
-            messages.error(request, "You do not have permission to access the dashboard.")
-            return redirect('login')
+            messages.error(request, "You do not have permission to access this page.")
+            return redirect('home')
     except User.DoesNotExist:
         messages.error(request, "User not found")
         return redirect('login')
@@ -289,32 +298,38 @@ def index(request):
 def services(request):
     return render(request, 'services.html')
 
-
 def profile(request):
-    user = User.objects.get(id=request.session['user_id'])
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to access the this page.")
+        return redirect('login')
+
+    try:
+        user = User.objects.get(id=request.session['user_id'])
+        
+        if user.role != 'admin':
+            messages.error(request, "You do not have permission to access this page.")
+            return redirect('home')
+    except User.DoesNotExist:
+        messages.error(request, "User not found")
+        return redirect('login')
 
     if request.method == 'POST':
-        # Update profile picture
         if 'profile_pic' in request.FILES:
             profile_pic = request.FILES['profile_pic']
             fs = FileSystemStorage(location=settings.MEDIA_ROOT)
             filename = fs.save(profile_pic.name, profile_pic)
-            user.profile_picture = os.path.join(settings.MEDIA_URL, filename)  # Correct path for retrieval
+            user.profile_picture = os.path.join(settings.MEDIA_URL, filename)  
             user.save()
             messages.success(request, "Profile picture updated!")
 
-
-
-        # Update password
         if 'password' in request.POST and request.POST['password']:
             password = request.POST['password']
             if password:
                 user.set_password(password)
                 user.save()
-                update_session_auth_hash(request, user)  # Keep the user logged in after password change
+                update_session_auth_hash(request, user) 
                 messages.success(request, "Password updated!")
 
-        # Update other fields (e.g., first name, last name, email)
         user.fname = request.POST.get('fname', user.fname)
         user.lname = request.POST.get('lname', user.lname)
         user.email = request.POST.get('email', user.email)
@@ -329,27 +344,23 @@ def userprofile(request):
     user = User.objects.get(id=request.session['user_id'])
 
     if request.method == 'POST':
-        # Update profile picture
         if 'profile_pic' in request.FILES:
             profile_pic = request.FILES['profile_pic']
             fs = FileSystemStorage(location=settings.MEDIA_ROOT)
             filename = fs.save(profile_pic.name, profile_pic)
-            user.profile_picture = os.path.join(settings.MEDIA_URL, filename)  # Correct path for retrieval
+            user.profile_picture = os.path.join(settings.MEDIA_URL, filename) 
             user.save()
             messages.success(request, "Profile picture updated!")
 
 
-
-        # Update password
         if 'password' in request.POST and request.POST['password']:
             password = request.POST['password']
             if password:
                 user.set_password(password)
                 user.save()
-                update_session_auth_hash(request, user)  # Keep the user logged in after password change
+                update_session_auth_hash(request, user)  
                 messages.success(request, "Password updated!")
 
-        # Update other fields (e.g., first name, last name, email)
         user.fname = request.POST.get('fname', user.fname)
         user.lname = request.POST.get('lname', user.lname)
         user.email = request.POST.get('email', user.email)
@@ -362,7 +373,24 @@ def userprofile(request):
 
 def charts(request):
     if 'user_id' not in request.session:
-        messages.error(request, "You must be logged in to access the charts page.")
+        messages.error(request, "You must be logged in to access this page.")
+        return redirect('login')
+
+    try:
+        user = User.objects.get(id=request.session['user_id'])
+        
+        if user.role != 'admin':
+            messages.error(request, "You do not have permission to access this page.")
+            return redirect('home') 
+    except User.DoesNotExist:
+        messages.error(request, "User not found.")
+        return redirect('login')
+
+    return render(request, 'admin/charts.html', {'user': user})
+
+def home(request):
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to access this page.")
         return redirect('login')
 
     try:
@@ -371,5 +399,16 @@ def charts(request):
         messages.error(request, "User not found")
         return redirect('login')
 
-    return render(request, 'admin/charts.html', {'user': user})
+    return render(request, 'user/home.html', {'user': user})
 
+def history(request):
+    if 'user_id' not in request.session:
+        messages.error(request, "You must be logged in to access this page.")
+        return redirect('login')
+
+    try:
+        user = User.objects.get(id=request.session['user_id'])
+    except User.DoesNotExist:
+        messages.error(request, "User not found")
+        return redirect('login')
+    return render(request, 'user/history.html', {'user': user})

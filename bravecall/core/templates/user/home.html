@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BraveCall</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/css/main.css" rel="stylesheet">
+    <link href="../static/css/home.css" rel="stylesheet">
+</head>
+<body class="light-background">
+
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+            <a href="#" class="logo d-flex align-items-center">
+                <h1 class="sitename">BraveCall</h1>
+            </a>
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Report</a></li>
+                    <li><a href="{% url 'history' %}">History</a></li>
+                </ul>
+            </nav>
+
+            <div class="profile-dropdown">
+                <img src="{{ user.profile_picture }}" alt="Profile" class="profile-img" id="profile-dropdown-toggle">
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="{% url 'user-profile' %}">Profile</a>
+                    <a href="#" id="logoutLink">Logout</a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section id="pricing" class="pricing section light-background">
+        <section class="faq-9 faq section light-background" >
+        <div class="dashboard-container">
+            <div class="main-content">
+                <div class="welcome-card">
+                    <div class="welcome-text">
+                        <h2>Welcome Back, {{ user.fname }}!</h2>
+                        <p>Your safety matters. Quickly report incidents, stay informed, and take control of your security.</p>
+                        <a href="#" class="cta">Report an Issue</a>
+                    </div>
+                    <div class="welcome-image">
+                        <img src="../static/assets/img/welcome.jpg" alt="Stay Safe" class="animated-image">
+                    </div>
+                </div>
+            
+                <div class="feature-section">
+                    <h3>Explore Your Safety Hub</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-text">
+                                <h4>Quick Report</h4>
+                                <p>File an incident within seconds and get immediate assistance.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📜</div>
+                            <div class="feature-text">
+                                <h4>Report History</h4>
+                                <p>Track all past reports in one place and stay updated on their status.</p>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-text">
+                                <h4>Safety Tips</h4>
+                                <p>Learn essential safety tips to protect yourself and those around you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widgets-container">
+                    <div class="widget wide-widget">
+                        <h4>Violence Prevention Tips</h4>
+                        <div class="tip-carousel">
+                            <p id="tip-text">Always stay aware of your surroundings.</p>
+                            <button onclick="nextTip()">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="widget tall-widget">
+                        <h4>Self-Defense Basics</h4>
+                        <ul class="tip-list">
+                            <li>🔹 Trust your instincts and remove yourself from unsafe situations.</li>
+                            <li>🔹 Learn basic self-defense moves like striking vulnerable points.</li>
+                            <li>🔹 Carry a whistle or personal alarm.</li>
+                            <li>🔹 Keep emergency contacts easily accessible.</li>
+                        </ul>
+                    </div>
+
+                    <div class="widget small-widget">
+                        <h4>Emergency Checklist</h4>
+                        <ul>
+                            <li><input type="checkbox"> Safe location identified</li>
+                            <li><input type="checkbox"> Emergency contacts saved</li>
+                            <li><input type="checkbox"> Self-defense tool available</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar">
+                <div class="calendar-card">
+                    <h4>Today's Date</h4>
+                    <div id="calendar"></div>
+                </div>
+                <div class="widget emergency-card">
+                    <h4>Emergency Contacts</h4>
+                    <ul>
+                        <li>🚓 <strong>Police:</strong> 911</li>
+                        <li>🚑 <strong>Ambulance:</strong> 112</li>
+                        <li>🔥 <strong>Fire Department:</strong> 101</li>
+                        <li>📞 <strong>Helpline:</strong> +1 800-123-HELP</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Logout</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-actions">
+                <button id="confirmLogout" class="btn btn-danger">Yes, Logout</button>
+                <button id="cancelLogout" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/home.js"></script>
+    
+</body>
+</html>

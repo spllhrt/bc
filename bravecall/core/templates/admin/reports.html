@@ -153,14 +153,32 @@
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
-                                                    <th>Account owner</th>
+                                                    <th>User ID</th> 
+                                                    <th>Text</th>
+                                                    <th>Severity</th>
+                                                    <th>Predicted Gender</th>
+                                                    <th>Age Group</th>
+                                                    <th>Applicable Law</th>
+                                                    <th>Law Section</th>
+                                                    <th>Law Meaning</th>
+                                                    <th>Help Center</th>
+                                                    <th>Timestamp</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {% for user in users %}
                                                     <tr>
-                                                        <td>{{ user.fname }} {{ user.lname }}</td>
+                                                        <td>{{ user.id }}</td>
+                                                        <td>Harassment at workplace</td>
+                                                        <td><span class="badge bg-danger">High</span></td>
+                                                        <td>Female</td>
+                                                        <td>Adult</td>
+                                                        <td>Workplace Harassment Act</td>
+                                                        <td>Section 12</td>
+                                                        <td>Protection against workplace harassment</td>
+                                                        <td>Women's Helpline</td>
+                                                        <td>2025-02-25 14:30:00</td>
                                                         <td>
                                                             <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{ user.id }}">Edit</button>
                                                             <form method="post" style="display:inline;">

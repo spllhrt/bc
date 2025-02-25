@@ -152,7 +152,8 @@ EMAIL_HOST = 'smtp.gmail.com'  # For Gmail
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'asteria.sky3@gmail.com'  # Replace with your email
-EMAIL_HOST_PASSWORD = 'yyxz juro oxiz qjoo' 
+EMAIL_HOST_PASSWORD = 'kufh xbeq apvk udsy' # 16 digits password
+
 
 AUTH_USER_MODEL = 'core.User' 
 

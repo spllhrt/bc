@@ -25,7 +25,11 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('services/', views.services, name='services'),
     
+    
+    # ETOO YUNG NADAGDAG BAIIII
     path('user-profile/', views.userprofile, name='user-profile'),
+    path('history/', views.history, name='history'),
+    path('home/', views.home, name='home'),
 ]
 
 if settings.DEBUG:
