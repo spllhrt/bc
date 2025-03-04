@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BraveCall - Find Help</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body class="light-background">
+    <main class="main container mt-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h2 class="text-center">Find Nearest Help</h2>
+                    <label for="severity" class="form-label">Select Emergency Severity</label>
+                    <select id="severity" class="form-select mb-3">
+                        <option value="">Select Severity</option>
+                        <option value="mild">Mild</option>
+                        <option value="moderate">Moderate</option>
+                        <option value="severe">Severe</option>
+                    </select>
+                    <label for="location_text" class="form-label">Enter Location or Use GPS</label>
+                    <div class="input-group mb-3">
+                        <input type="text" id="location_text" class="form-control" placeholder="Enter your location">
+                        <button class="btn btn-secondary" onclick="useGPS()">Use GPS</button>
+                        <button class="btn btn-primary" onclick="fetchPlaces()">Find Help</button>
+                    </div>
+                </div>
+                <h3 class="mt-3">Nearest Locations</h3>
+                <ul id="places-list" class="list-group"></ul>
+            </div>
+            <div class="col-md-8">
+                <h3>Map</h3>
+                <div id="map" style="height: 500px; border-radius: 10px; overflow: hidden; box-shadow: 0px 4px 10px rgba(0,0,0,0.1);"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let map, userMarker, markersGroup;
+        
+        function initMap() {
+            map = L.map("map").setView([14.5201, 121.0500], 13);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "&copy; OpenStreetMap contributors"
+            }).addTo(map);
+            markersGroup = L.featureGroup().addTo(map);
+        }
+
+        function useGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("location_text").value = data.display_name;
+                            placeMarker(lat, lng, "Your Location");
+                        });
+                }, () => {
+                    alert("GPS location access denied!");
+                });
+            } else {
+                alert("GPS is not supported on this device.");
+            }
+        }
+
+        function fetchPlaces() {
+            const locationText = document.getElementById("location_text").value;
+            const severity = document.getElementById("severity").value;
+
+            if (!severity) {
+                alert("Please select severity!");
+                return;
+            }
+
+            let url = `/places/?severity=${severity}`;
+
+            if (locationText) {
+                url += `&location_text=${encodeURIComponent(locationText)}`;
+
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationText)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length > 0) {
+                            const { lat, lon } = data[0];
+                            placeMarker(lat, lon, "Entered Location");
+                            url += `&latitude=${lat}&longitude=${lon}`;
+                            getResults(url, lat, lon);
+                        } else {
+                            alert("Location not found. Please enter a valid address.");
+                        }
+                    })
+                    .catch(error => console.error("Error fetching coordinates:", error));
+
+            } else if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    url += `&latitude=${latitude}&longitude=${longitude}`;
+
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.display_name) {
+                                document.getElementById("location_text").value = data.display_name;
+                            }
+                            placeMarker(latitude, longitude, "Your Location");
+                            getResults(url, latitude, longitude);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching address:", error);
+                            getResults(url, latitude, longitude);
+                        });
+                }, () => {
+                    alert("GPS location access denied!");
+                });
+            } else {
+                alert("Enter a location or enable GPS.");
+            }
+        }
+
+        function placeMarker(lat, lon, label) {
+            if (userMarker) map.removeLayer(userMarker);
+
+            userMarker = L.marker([lat, lon]).addTo(map)
+                .bindPopup(`<b>${label}</b>`)
+                .openPopup();
+
+            map.setView([lat, lon], 14);
+        }
+
+        function getResults(url, userLat, userLng) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    let placesList = document.getElementById("places-list");
+                    placesList.innerHTML = "";
+                    markersGroup.clearLayers();
+
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    let bounds = [];
+                    data.places.forEach(place => {
+                        let li = document.createElement("li");
+                        li.classList.add("list-group-item");
+                        li.innerHTML = `<strong>${place.name}</strong><br>${place.address}<br><em>${place.distance} km away</em>`;
+                        placesList.appendChild(li);
+
+                        let marker = L.marker([place.latitude, place.longitude]).addTo(markersGroup)
+                            .bindPopup(`<b>${place.name}</b><br>${place.address}<br>${place.distance} km away`);
+                        bounds.push([place.latitude, place.longitude]);
+                    });
+
+                    if (userLat && userLng) {
+                        bounds.push([userLat, userLng]);
+                        placeMarker(userLat, userLng, "Your Location");
+                    }
+
+                    if (bounds.length > 0) {
+                        map.fitBounds(bounds, { padding: [50, 50] });
+                    }
+                })
+                .catch(error => console.error("Error fetching places:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", initMap);
+    </script>
+</body>
+</html>

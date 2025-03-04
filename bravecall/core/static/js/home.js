@@ -63,22 +63,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     generateCalendar();
 
-    const tips = [
-        "Always stay aware of your surroundings.",
-        "Trust your instincts—leave if you feel unsafe.",
-        "Avoid isolated areas, especially at night.",
-        "Keep emergency contacts easily accessible.",
-        "Use well-lit paths and stay in groups whenever possible."
-    ];
     let currentTip = 0;
+    const tipBox = document.querySelector(".tip-box");
 
     window.nextTip = function () {
-        const tipText = document.getElementById("tip-text");
-        if (tipText) {
-            tipText.innerText = tips[(currentTip = (currentTip + 1) % tips.length)];
-        }
+        currentTip = (currentTip + 1) % 4; // Rotate among 4 tips
+        tipBox.style.transform = `rotateY(${currentTip * 90}deg)`;
     };
-
     const logoutLink = document.getElementById("logoutLink");
     const logoutModal = document.getElementById("logoutModal");
     const confirmLogout = document.getElementById("confirmLogout");
@@ -112,4 +103,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    let dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) { slideIndex = 1; }
+    for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].className += " active";
+    setTimeout(showSlides, 2000);
+}
+
+    
 });

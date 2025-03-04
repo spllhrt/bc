@@ -30,6 +30,9 @@ urlpatterns = [
     path('user-profile/', views.userprofile, name='user-profile'),
     path('history/', views.history, name='history'),
     path('home/', views.home, name='home'),
+    
+    path("places/", views.get_nearest_places, name="get_nearest_places"),
+    path("map/", views.places_page, name="map"),
 ]
 
 if settings.DEBUG:

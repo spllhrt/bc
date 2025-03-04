@@ -108,48 +108,100 @@ body {
 /* Feature Section */
 .feature-section {
     text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #f3f4f6, #e0e7ff);
+    perspective: 1000px;
 }
 
 .feature-section h3 {
-    margin-bottom: 15px;
-    font-size: 20px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Feature Grid */
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    perspective: 800px;
 }
 
+/* 3D Feature Cards */
 .feature-card {
-    background: white;
-    padding: 20px;
+    background: linear-gradient(145deg, #ffffff, #dfe9f3);
+    padding: 25px;
     display: flex;
     align-items: center;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), 
+                -5px -5px 15px rgba(255, 255, 255, 0.6);
+    transform-style: preserve-3d;
+    transform: rotateY(0deg) rotateX(0deg);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    position: relative;
+}
+
+/* 3D Rotation Effect */
+.feature-card:hover {
+    transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), 
+                -10px -10px 20px rgba(255, 255, 255, 0.6);
+}
+
+/* Floating Light Effect */
+.feature-card::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 80%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    filter: blur(5px);
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+/* Feature Icon */
+.feature-icon {
+    font-size: 40px;
+    margin-right: 15px;
+    color: #004899;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
+/* 3D Pop Effect */
+.feature-card:hover .feature-icon {
+    transform: scale(1.2) translateZ(10px);
 }
 
-.feature-icon {
-    font-size: 30px;
-    margin-right: 12px;
-}
-
+/* Feature Text */
 .feature-text h4 {
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: bold;
     color: #004899;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .feature-text p {
-    font-size: 14px;
+    font-size: 15px;
     color: #555;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Calendar Card */
 .calendar-card {
@@ -208,9 +260,61 @@ body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.wide-widget {
-    grid-column: span 2;
+.tall-widget {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: left;
+    border-left: 6px solid #d9534f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
 }
+
+.tall-widget:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.tall-widget h4 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #b52b27;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.tip-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tip-list li {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    background: #f8f9fa;
+    padding: 12px;
+    margin: 6px 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease-in-out;
+}
+
+.tip-list li:hover {
+    background: #d9534f;
+    color: white;
+    transform: translateX(5px);
+}
+
 
 .tall-widget {
     grid-row: span 2;
@@ -245,42 +349,189 @@ body {
     margin-left: 5px;
     font-weight: 600;
 }
-
-/* Tip Carousel */
-.tip-carousel {
+.tip-section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 25px;
     text-align: center;
+    margin: 30px auto;
+    width: 800px;
+    position: relative;
+    min-height: 320px;
+    border-left: 6px solid #0056b3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.tip-carousel button {
-    background: #0056b3;
+.tip-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tip-carousel {
+    width: 420px;
+    height: 160px;
+    position: relative;
+    margin: 0 auto;
+    perspective: 1200px;
+}
+
+.tip-box {
+    width: 99%;
+    height: 90%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+}
+
+.tip {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(135deg, #0056b3, #003366);
     color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.tip-carousel button:hover {
-    background: #003366;
-}
-
-/* Checklist */
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-ul li {
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    transition: transform 0.5s ease-in-out;
 }
 
-ul li input {
-    margin-right: 10px;
+.tip-container {
+    width: 420px;
+    height: 160px;
+    position: relative;
+    margin: 0 auto;
+    perspective: 1200px;
 }
+
+.tip:nth-child(1) { transform: rotateY(0deg) translateZ(210px); }
+.tip:nth-child(2) { transform: rotateY(90deg) translateZ(210px); }
+.tip:nth-child(3) { transform: rotateY(180deg) translateZ(210px); }
+.tip:nth-child(4) { transform: rotateY(270deg) translateZ(210px); }
+
+.tip-box:hover {
+    transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3), 
+                -10px -10px 20px rgba(255, 255, 255, 0.6);
+}
+
+.tip::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 80%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    filter: blur(5px);
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tip:hover::before {
+    opacity: 1;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.next-button {
+    display: inline-block;
+    padding: 15px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 91, 187, 0.3);
+    text-align: center;
+    width: 260px;
+    position: relative;
+    z-index: 10;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.next-button:hover {
+    background: linear-gradient(135deg, #0056b3, #004494);
+    transform: scale(1.08);
+    box-shadow: 0 6px 12px rgba(0, 91, 187, 0.5);
+}
+
+
+/* Emergency Checklist Styling */
+.widget.small-widget {
+    margin-top: 20px;
+    background: #fff; /* Clean white background */
+    border-left: 5px solid #ff6b6b; /* Red accent for emergency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    min-height: 180px; /* Makes the widget slightly longer */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.widget.small-widget h4 {
+    font-size: 18px;
+    color: #d9534f; /* Emergency red */
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.widget.small-widget ul {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+}
+
+.widget.small-widget li {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    padding: 8px 0;
+}
+
+.widget.small-widget input[type="checkbox"] {
+    margin-right: 12px;
+    transform: scale(1.2); /* Slightly larger checkboxes */
+    cursor: pointer;
+}
+
+/* Makes the checklist look evenly spaced */
+.widget.small-widget li:last-child {
+    margin-bottom: 15px;
+}
+
+/* Hover effect */
+.widget.small-widget li:hover {
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
 
 /* Animation */
 @keyframes fadeIn {
@@ -370,4 +621,62 @@ ul li input {
     padding: 8px 15px;
     margin: 5px;
     cursor: pointer;
+}
+
+.slideshow-container {
+    max-width: 1200px;
+    position: relative;
+    margin: auto;
+}
+
+.mySlides img {
+    width: 300%; 
+    height: auto; 
+    max-height: 500px; 
+    object-fit: cover; 
+}
+
+.text {
+    color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.numbertext {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 12px;
+    position: absolute;
+    top: 10px; /* Adjusts the distance from the top */
+    left: 10px; /* Adjusts the distance from the left */
+    border-radius: 5px;
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 2s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+
+@media only screen and (max-width: 300px) {
+    .text {font-size: 11px;}
 }

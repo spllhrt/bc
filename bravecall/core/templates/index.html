@@ -22,11 +22,13 @@
   <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <link href="../static/assets/css/main.css" rel="stylesheet">
+  <link href="../static/css/styles.css" rel="stylesheet">
 </head>
 
 <body class="index-page">
 
   <header id="header" class="header d-flex align-items-center fixed-top">
+    
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
       <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
@@ -80,8 +82,16 @@
 
           <div class="col-lg-6">
             <div class="hero-image" data-aos="zoom-out" data-aos-delay="300">
-              <img src="../static/assets/img/illustration-1.webp" alt="Hero Image" class="img-fluid">
-
+              <div class="my-3d-effect">
+                <!-- Your image container and text HTML -->
+                <div class="container">
+                    <div class="image-container">
+                        <div class="shine"></div>
+                        <img src="../static/assets/img/shield.png" alt="3D Effect" class="image">
+                    </div>
+                    <div class="bravecall-text">BRAVECALL</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -195,6 +205,7 @@
   <script src="../static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
   <script src="../static/assets/js/main.js"></script>
+  <script src="../static/js/script.js"></script>
 
 </body>
 

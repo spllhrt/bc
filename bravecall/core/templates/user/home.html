@@ -9,6 +9,31 @@
     <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/assets/css/main.css" rel="stylesheet">
     <link href="../static/css/home.css" rel="stylesheet">
+
+
+    <style>
+        .slider {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: #f8f9fa;
+            padding: 20px 0;
+        }
+        .slides-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+        }
+        .slide {
+            display: inline-block;
+        }
+        .slide img {
+            max-width: 300px;
+        }
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+    </style>
 </head>
 <body class="light-background">
 
@@ -37,8 +62,36 @@
     </header>
 
     <main class="main">
+        
         <section id="pricing" class="pricing section light-background">
         <section class="faq-9 faq section light-background" >
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <div class="numbertext">1 / 3</div>
+                    <img src="../static/assets/img/image1.png" style="width:100%">
+                    <div class="text">Stay Alert. Stay Safe.</div>
+                </div>
+            
+                <div class="mySlides fade">
+                    <div class="numbertext">2 / 3</div>
+                    <img src="../static/assets/img/image2.jpg" style="width:100%">
+                    <div class="text">Report Incidents in Seconds.</div>
+                </div>
+            
+                <div class="mySlides fade">
+                    <div class="numbertext">3 / 3</div>
+                    <img src="../static/assets/img/image3.jpg" style="width:100%">
+                    <div class="text">Help Create a Safer Community.</div>
+                </div>
+            </div>
+            <br>
+            
+            <div style="text-align:center">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            
         <div class="dashboard-container">
             <div class="main-content">
                 <div class="welcome-card">
@@ -76,36 +129,44 @@
                                 <p>Learn essential safety tips to protect yourself and those around you.</p>
                             </div>
                         </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📍</div>
+                            <div class="feature-text">
+                                <h4>Safe Zones</h4>
+                                <p>Locate the nearest Barangay Halls and Police Stations for assistance.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="widgets-container">
-                    <div class="widget wide-widget">
-                        <h4>Violence Prevention Tips</h4>
+                    <div class="tip-section">
+                        <h2 class="tip-title">Safety Tips</h2>
                         <div class="tip-carousel">
-                            <p id="tip-text">Always stay aware of your surroundings.</p>
-                            <button onclick="nextTip()">Next</button>
+                            <div class="tip-box">
+                                <div class="tip">Always stay aware of your surroundings.</div>
+                                <div class="tip">Trust your instincts—leave if you feel unsafe.</div>
+                                <div class="tip">Avoid isolated areas, especially at night.</div>
+                                <div class="tip">Keep emergency contacts easily accessible.</div>
+                            </div>
+                        </div>
+                        <div class="button-container">
+                            <button class="next-button" onclick="nextTip()">Next Tip</button>
                         </div>
                     </div>
 
-                    <div class="widget tall-widget">
-                        <h4>Self-Defense Basics</h4>
-                        <ul class="tip-list">
-                            <li>🔹 Trust your instincts and remove yourself from unsafe situations.</li>
-                            <li>🔹 Learn basic self-defense moves like striking vulnerable points.</li>
-                            <li>🔹 Carry a whistle or personal alarm.</li>
-                            <li>🔹 Keep emergency contacts easily accessible.</li>
-                        </ul>
-                    </div>
-
-                    <div class="widget small-widget">
-                        <h4>Emergency Checklist</h4>
-                        <ul>
-                            <li><input type="checkbox"> Safe location identified</li>
-                            <li><input type="checkbox"> Emergency contacts saved</li>
-                            <li><input type="checkbox"> Self-defense tool available</li>
-                        </ul>
-                    </div>
                 </div>
+                
+                <div class="widget tall-widget">
+                    <h4>Self-Defense Basics</h4>
+                    <ul class="tip-list">
+                        <li>🔹 Trust your instincts and remove yourself from unsafe situations.</li>
+                        <li>🔹 Learn basic self-defense moves like striking vulnerable points.</li>
+                        <li>🔹 Carry a whistle or personal alarm.</li>
+                        <li>🔹 Keep emergency contacts easily accessible.</li>
+                    </ul>
+                </div>
+
+                
             </div>
             <div class="sidebar">
                 <div class="calendar-card">
@@ -121,8 +182,44 @@
                         <li>📞 <strong>Helpline:</strong> +1 800-123-HELP</li>
                     </ul>
                 </div>
+                <div class="widget small-widget">
+                    <h4>Emergency Checklist</h4>
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="safe-location">
+                            <label for="safe-location">Safe location identified</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="emergency-contacts">
+                            <label for="emergency-contacts">Emergency contacts saved</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="self-defense">
+                            <label for="self-defense">Self-defense tool available</label>
+                        </li>
+                    </ul>
+                </div>
+                
             </div>
         </div>
+
+        <div class="slider">
+            <div class="slides-track">
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+                <div class="slide"><img src="../static/assets/img/safespaces.jpg" alt="Safe Spaces"></div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const track = document.querySelector(".slides-track");
+                track.innerHTML += track.innerHTML; // Duplicate slides for smooth infinite scroll
+            });
+        </script>
     </section>
     </main>
 

@@ -47,3 +47,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.fname} {self.lname}"
+
+
+
+class Place(models.Model):
+    name = models.CharField(max_length=255)
+    type = models.CharField(max_length=20, choices=[("barangay_hall", "Barangay Hall"), ("police_station", "Police Station")])
+    address = models.TextField()
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    
+    def __str__(self):
+        return self.name
+

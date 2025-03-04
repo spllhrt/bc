@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from google.oauth2 import id_token
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.conf import settings
@@ -15,11 +15,71 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.core.files.storage import FileSystemStorage
-
+import requests
 
 User = get_user_model()
 
 from .tokens import account_activation_token
+
+from core.models import Place
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
+
+def get_nearest_places(request):
+    user_location_text = request.GET.get("location_text")
+    severity = request.GET.get("severity")
+    latitude = request.GET.get("latitude")
+    longitude = request.GET.get("longitude")
+
+    # If user doesn't enter a location, they must use GPS
+    if not user_location_text and not (latitude and longitude):
+        return JsonResponse({"error": "Please enter a location or enable GPS."}, status=400)
+
+    # Geocode if location is given as text
+    if user_location_text and not (latitude and longitude):
+        geolocator = Nominatim(user_agent="bravecall")
+        location = geolocator.geocode(user_location_text)
+
+        if location:
+            latitude, longitude = location.latitude, location.longitude
+        else:
+            return JsonResponse({"error": "Invalid location entered."}, status=400)
+
+    # Convert latitude & longitude to float
+    try:
+        latitude, longitude = float(latitude), float(longitude)
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "Invalid coordinates."}, status=400)
+
+    user_coords = (latitude, longitude)
+
+    # Filter places based on severity
+    if severity in ["mild", "moderate"]:
+        places = Place.objects.filter(type="barangay_hall")
+    elif severity == "severe":
+        places = Place.objects.filter(type="police_station")
+    else:
+        return JsonResponse({"error": "Invalid severity. Choose mild, moderate, or severe."}, status=400)
+
+    # Compute distances and sort by nearest
+    places_data = []
+    for place in places:
+        place_coords = (place.latitude, place.longitude)
+        distance = geodesic(user_coords, place_coords).km
+        places_data.append({
+            "name": place.name,
+            "address": place.address,
+            "latitude": place.latitude,
+            "longitude": place.longitude,
+            "distance": round(distance, 2),
+        })
+
+    places_data.sort(key=lambda x: x["distance"])  # Sort by nearest
+
+    return JsonResponse({"places": places_data[:5]}) 
+
+def places_page(request):
+    return render(request, "user/map.html")
 
 def activate(request, uidb64, token):
     try:
@@ -136,8 +196,8 @@ def google_auth(request):
 
     try:
         user_data = id_token.verify_oauth2_token(
-            token, requests.Request(), os.getenv('GOOGLE_OAUTH_CLIENT_ID')
-        )
+        token, google_requests.Request(), os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+    )
     except ValueError:
         return HttpResponse(status=403)  
 
@@ -367,7 +427,7 @@ def userprofile(request):
         user.save()
 
         messages.success(request, "Profile updated!")
-        return redirect('userprofile')
+        return redirect('user-profile')
 
     return render(request, 'user/profile.html', {'user': user})
 
